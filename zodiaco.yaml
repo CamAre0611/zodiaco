@@ -1,0 +1,134 @@
+openapi: 3.0.1
+info:
+  title: CaballerosApp API
+  version: "1.0.0"
+  description: API REST para gestionar caballeros del zodiaco (MySQL y MongoDB)
+
+servers:
+  - url: http://localhost:3001
+    description: Go - Create (MySQL)
+  - url: http://localhost:3002
+    description: Go - Read (MySQL)
+  - url: http://localhost:3003
+    description: Go - Update (MySQL)
+  - url: http://localhost:3004
+    description: Go - Delete (MySQL)
+  - url: http://localhost:4001
+    description: C# - Create (MongoDB)
+  - url: http://localhost:4002
+    description: C# - Read (MongoDB)
+  - url: http://localhost:4003
+    description: C# - Update (MongoDB)
+  - url: http://localhost:4004
+    description: C# - Delete (MongoDB)
+
+paths:
+  /caballeros:
+    get:
+      summary: Obtener todos los caballeros
+      tags: [Caballeros]
+      responses:
+        "200":
+          description: Lista de caballeros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Caballero"
+
+    post:
+      summary: Crear un nuevo caballero
+      tags: [Caballeros]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Caballero"
+      responses:
+        "201":
+          description: Caballero creado exitosamente
+
+  /caballeros/{id}:
+    get:
+      summary: Obtener caballero por ID
+      tags: [Caballeros]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Caballero encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Caballero"
+        "404":
+          description: No encontrado
+
+    put:
+      summary: Actualizar caballero por ID
+      tags: [Caballeros]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Caballero"
+      responses:
+        "204":
+          description: Caballero actualizado
+
+    delete:
+      summary: Eliminar caballero por ID
+      tags: [Caballeros]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Caballero eliminado
+
+components:
+  schemas:
+    Caballero:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del caballero
+        nombre:
+          type: string
+        constelacion:
+          type: string
+        rango:
+          type: string
+        pais:
+          type: string
+        edad:
+          type: integer
+        habilidad_principal:
+          type: string
+        imagen_url:
+          type: string
+      required:
+        - nombre
+        - constelacion
+        - rango
+        - pais
+        - edad
+        - habilidad_principal
+        - imagen_url
